@@ -1,4 +1,4 @@
-import { CONTAINER_EL } from "./constants";
+import { CONTAINER_EL } from "../constants";
 
 function Timer(duration = 0) {
   this.duration = duration;
