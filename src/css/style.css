@@ -16,3 +16,16 @@ body {
   box-shadow: 0px 0px 4px;
   max-width: 600px;
 }
+
+#landing {
+  padding: 3rem;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  justify-content: space-around;
+}
+
+#landing input, #landing button {
+  padding: 2rem;
+}

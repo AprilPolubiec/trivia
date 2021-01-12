@@ -1,9 +1,9 @@
 import "./css/style.css";
-import "./js/question";
-import Timer from "./js/timer";
+import Landing from "./js/pages/landing";
 
 $(document).ready(function () {
-  const timer = new Timer(10);
-  timer.render()
-  timer.start()
+  // initially render landing.js
+  document.getElementById("container").append(Landing());
+  // when we have a game code, render lobby
+  // if game.started - start the game!
 });
