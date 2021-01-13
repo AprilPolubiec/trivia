@@ -1,14 +1,13 @@
 import { addGameDoc } from "../firebase";
+import { redirect } from "../routes";
 const joinGame = (game_code, username) => {
   console.log(`joinGame: ${game_code} ${username}`);
 };
 
 const createGame = () => {
-  try {
-    addGameDoc();
-  } catch (e) {
-    console.log(e);
-  }
+  addGameDoc().then(() => {
+    redirect("lobby");
+  });
 };
 
 export default function Landing() {

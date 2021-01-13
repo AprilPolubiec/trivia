@@ -1,5 +1,6 @@
 var randomWords = require("random-words");
 
+// TODO: use my own funner words
 export const generateGameID = () => {
   return randomWords({
     exactly: 1,
