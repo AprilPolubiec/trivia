@@ -18,9 +18,10 @@ firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
 
-const gameCollection = db.collection("games");
+export const gameCollection = db.collection("games");
+export const gameDoc = (id) => gameCollection.doc(id);
 
-const playersCollection = (id) => gameCollection.doc(id).collection("players");
+export const playersCollection = (id) => gameDoc(id).collection("players");
 
 export const addGameDoc = async () => {
   // Generate new game ID
@@ -39,6 +40,7 @@ export const addGameDoc = async () => {
     .catch((err) => console.log(err));
 };
 
+//TODO: make sure player name doesn't already exist
 export const addPlayerDoc = ({ id, username }) => {
   return playersCollection(id).doc(username).set({ username, score: 0 });
 };
