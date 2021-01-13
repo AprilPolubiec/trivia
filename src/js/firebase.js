@@ -23,6 +23,7 @@ export const addGameDoc = async () => {
   const id = generateGameID();
   const questions = await generateTriviaQuestions();
   console.log(id, questions);
+  return Promise.resolve()
   return db
     .collection("games")
     .doc(id)
