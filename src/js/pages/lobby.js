@@ -1,6 +1,6 @@
-export default function Lobby() {
+export default function Lobby({ id }) {
   const el = document.createElement("div");
-  el.innerText = "chillin in da lobs";
-  console.log(el)
+  el.innerText = "chillin in da lobs of " + id;
+  console.log(el);
   return el;
 }

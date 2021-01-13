@@ -1,12 +1,17 @@
-import { addGameDoc } from "../firebase";
+import { addGameDoc, addPlayerDoc } from "../firebase";
 import { navigate } from "../routes";
-const joinGame = (game_code, username) => {
-  console.log(`joinGame: ${game_code} ${username}`);
+
+const joinGame = (id, username) => {
+  console.log(`joinGame: ${id} ${username}`);
+  addPlayerDoc({ id, username }).then(() => {
+    navigate("lobby", { id, username });
+  });
 };
 
 const createGame = () => {
-  addGameDoc().then(() => {
-    navigate("lobby");
+  addGameDoc().then((id) => {
+    const username = "host";
+    joinGame(id, username);
   });
 };
 
