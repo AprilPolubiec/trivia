@@ -10,10 +10,10 @@ const routes = {
 
 const container = document.getElementById(CONTAINER_ID);
 
-export const navigate = (destination) => {
+export const navigate = (destination, params) => {
   if (container.childNodes[0]) {
-    container.replaceChild(routes[destination](), container.childNodes[0]);
+    container.replaceChild(routes[destination](params), container.childNodes[0]);
   } else {
-    container.appendChild(routes[destination]())
+    container.appendChild(routes[destination](params))
   }
 };
