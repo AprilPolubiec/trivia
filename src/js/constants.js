@@ -1,1 +1,1 @@
-export const CONTAINER_EL = document.getElementById("container");
+export const CONTAINER_ID = "container";

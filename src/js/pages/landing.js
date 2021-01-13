@@ -1,12 +1,12 @@
 import { addGameDoc } from "../firebase";
-import { redirect } from "../routes";
+import { navigate } from "../routes";
 const joinGame = (game_code, username) => {
   console.log(`joinGame: ${game_code} ${username}`);
 };
 
 const createGame = () => {
   addGameDoc().then(() => {
-    redirect("lobby");
+    navigate("lobby");
   });
 };
 
