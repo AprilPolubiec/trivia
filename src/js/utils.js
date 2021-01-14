@@ -16,3 +16,24 @@ export const generateTriviaQuestions = () => {
     .then((data) => data.results)
     .catch((err) => console.log(err));
 };
+
+export const createPageContainerEl = (page) => {
+  var containerEl = document.createElement("div");
+  containerEl.id = page;
+  return containerEl;
+};
+
+export const createTextInputEl = (name) => {
+  var inputEl = document.createElement("input");
+  inputEl.type = "text";
+  inputEl.id = name.replace(" ", "-");
+  inputEl.setAttribute("name", name.replace(" ", "-"));
+  inputEl.placeholder = `enter ${name}`.toUpperCase();
+  return inputEl;
+};
+
+export const createButtonEl = (text) => {
+  var buttonEl = document.createElement("button");
+  buttonEl.innerText = text.toUpperCase();
+  return buttonEl;
+};
