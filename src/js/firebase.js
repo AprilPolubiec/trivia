@@ -23,7 +23,7 @@ export const gameDoc = (id) => gameCollection.doc(id);
 
 export const playersCollection = (id) => gameDoc(id).collection("players");
 
-export const addGameDoc = async () => {
+export const addGameDoc = async (host) => {
   // Generate new game ID
   const id = generateGameID();
   const questions = await generateTriviaQuestions();
@@ -33,6 +33,7 @@ export const addGameDoc = async () => {
     .set({
       id,
       questions,
+      host
     })
     .then(() => {
       return id;
