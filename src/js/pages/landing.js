@@ -9,8 +9,8 @@ const joinGame = (id, username) => {
 };
 
 const createGame = () => {
-  addGameDoc().then((id) => {
-    const username = "host";
+  const username = "host";
+  addGameDoc(username).then((id) => {
     joinGame(id, username);
   });
 };
