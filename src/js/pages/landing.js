@@ -1,5 +1,10 @@
 import { addGameDoc, addPlayerDoc } from "../firebase";
 import { navigate } from "../routes";
+import {
+  createPageContainerEl,
+  createTextInputEl,
+  createButtonEl,
+} from "../utils";
 
 const joinGame = (id, username) => {
   console.log(`joinGame: ${id} ${username}`);
@@ -16,28 +21,16 @@ const createGame = () => {
 };
 
 export default function Landing() {
-  var landingContainerEl = document.createElement("div");
-  landingContainerEl.id = "landing";
+  var landingContainerEl = createPageContainerEl("landing");
 
-  var usernameInputEl = document.createElement("input");
-  usernameInputEl.id = "username";
-  usernameInputEl.setAttribute("name", "username");
-  usernameInputEl.placeholder = "ENTER NAME";
+  var usernameInputEl = createTextInputEl("username");
+  var codeEl = createTextInputEl("game code");
 
-  var codeEl = document.createElement("input");
-  codeEl.id = "code";
-  codeEl.setAttribute("name", "code");
-  codeEl.placeholder = "ENTER GAME CODE";
-
-  var joinButtonEl = document.createElement("button");
-  joinButtonEl.className = "landing-btn";
-  joinButtonEl.innerText = "JOIN";
+  var joinButtonEl = createButtonEl("join");
   joinButtonEl.onclick = () => joinGame(codeEl.value, usernameInputEl.value);
 
-  var newGameButtonEl = document.createElement("button");
-  newGameButtonEl.className = "landing-btn";
-  newGameButtonEl.innerText = "CREATE";
-  newGameButtonEl.onclick = () => createGame();
+  var newGameButtonEl = createButtonEl("create");
+  newGameButtonEl.onclick = createGame;
 
   landingContainerEl.append(
     usernameInputEl,
