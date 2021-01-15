@@ -37,3 +37,19 @@ export const createButtonEl = (text) => {
   buttonEl.innerText = text.toUpperCase();
   return buttonEl;
 };
+
+export const createPlayerListEl = (username, score) => {
+  const playerEl = document.createElement("li");
+  playerEl.setAttribute("name", username);
+
+  const usernameEl = document.createElement("div");
+  usernameEl.className = "username";
+  usernameEl.innerText = username;
+
+  const scoreEl = document.createElement("div");
+  scoreEl.className = "score";
+  scoreEl.innerText = score;
+
+  playerEl.append(usernameEl, scoreEl);
+  return playerEl;
+};

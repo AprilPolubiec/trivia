@@ -28,12 +28,12 @@ export const addGameDoc = async (host) => {
   const id = generateGameID();
   const questions = await generateTriviaQuestions();
   console.log(id, questions);
-  return gameCollection
-    .doc(id)
+  return gameDoc(id)
     .set({
       id,
       questions,
-      host
+      host,
+      current_question: null,
     })
     .then(() => {
       return id;
@@ -44,4 +44,8 @@ export const addGameDoc = async (host) => {
 //TODO: make sure player name doesn't already exist
 export const addPlayerDoc = ({ id, username }) => {
   return playersCollection(id).doc(username).set({ username, score: 0 });
+};
+
+export const setCurrentQuestion = (id, index) => {
+  return gameDoc(id).set({ current_question: index }, { merge: true });
 };
