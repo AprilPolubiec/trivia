@@ -1,4 +1,4 @@
-import { CONTAINER_EL } from "../constants";
+import { CONTAINER_ID } from "../constants";
 
 function Timer(duration = 0) {
   this.duration = duration;
@@ -17,9 +17,10 @@ function Timer(duration = 0) {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
-        console.log(this.timeLeft);
+        this.timerEl.innerText = this.timeLeft
       } else {
         this.stop();
+        this.timeoutListener();
       }
     }, 1000);
   };
@@ -38,7 +39,13 @@ function Timer(duration = 0) {
   };
 
   this.render = () => {
-    CONTAINER_EL.append(this.timerEl);
+    document.getElementById(CONTAINER_ID).append(this.timerEl);
+  };
+
+  this.timeoutListener = function (val) {};
+
+  this.ontimeout = function (callback) {
+    this.timeoutListener = callback;
   };
 }
 
