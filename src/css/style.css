@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Roboto:wght@900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Roboto:wght@100;300;900&display=swap");
 
 :root {
   --main-bg-color: #232752;
@@ -30,6 +30,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column;
 }
 
 .question-container {
@@ -55,6 +56,9 @@ body {
 
 #timer {
   color: var(--light-yellow);
+  font-size: 5rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
 }
 
 #question-container {
@@ -64,7 +68,9 @@ body {
 
 input,
 button,
-.btn-primary {
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited {
   outline: none;
   background-color: var(--dark-purple);
   color: #fff;
@@ -75,7 +81,13 @@ button,
 
 button:hover,
 .btn-primary:hover,
-.checked {
+.checked,
+.btn-group-vertical label:hover,
+.btn-check:active + .btn-outline-primary,
+.btn-check:checked + .btn-outline-primary,
+.btn-outline-primary.active,
+.btn-outline-primary.dropdown-toggle.show,
+.btn-outline-primary:active {
   background-color: var(--dark-yellow);
   color: #fff;
   border-color: var(--dark-yellow);
@@ -129,4 +141,30 @@ button:hover,
 
 #player-list li .score {
   color: var(--light-yellow);
+}
+
+.btn-group-vertical {
+  width: 70vw;
+  padding: 2rem;
+  align-items: center;
+}
+
+.btn-group-vertical > .btn,
+.btn-group-vertical > .btn-group {
+  background-color: var(--dark-purple);
+  border-color: var(--dark-purple);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 20px;
+  width: 200px;
+  border: 1px solid var(--light-purple);
+}
+
+.btn-group-vertical > .question-text {
+  margin-bottom: 1rem;
+}
+
+.btn-group-vertical * {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
