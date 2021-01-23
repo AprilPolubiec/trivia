@@ -49,3 +49,9 @@ export const addPlayerDoc = ({ id, username }) => {
 export const setCurrentQuestion = (id, index) => {
   return gameDoc(id).set({ current_question: index }, { merge: true });
 };
+
+export const increasePlayerScore = ({ id, username, amount }) => {
+  return playersCollection(id)
+    .doc(username)
+    .update({ score: firebase.firestore.FieldValue.increment(amount) });
+};
