@@ -7,7 +7,7 @@ import {
 } from "../utils";
 
 const joinGame = (id, username) => {
-  console.log(`joinGame: ${id} ${username}`);
+  // console.log(`joinGame: ${id} ${username}`);
   addPlayerDoc({ id, username }).then(() => {
     navigate("lobby", { id, username });
   });

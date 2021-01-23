@@ -26,7 +26,7 @@ export default function Lobby({ id, username }) {
     playerEl.remove();
   };
 
-  const unsubsribePlayers = playersCollection(id).onSnapshot((querySnap) => {
+  const unsubscribePlayers = playersCollection(id).onSnapshot((querySnap) => {
     querySnap.docChanges().forEach(function (change) {
       if (change.type === "added") {
         console.log("New player: ", change.doc.data().username);
@@ -43,28 +43,34 @@ export default function Lobby({ id, username }) {
     });
   });
 
+  var current_question = -1;
+  const unsubscribeCurrentQuestion = gameDoc(id).onSnapshot((snap) => {
+    if (current_question === -1) {
+      current_question = snap.data().current_question;
+      return;
+    }
+    navigate("question", { id, username });
+    unsubscribePlayers();
+    unsubscribeCurrentQuestion();
+  });
+
   lobbyEl.append(playersListEl);
 
   const startGame = () => {
-    setCurrentQuestion(id, 0).then(() => {
-      //TODO: use localStorage for username
-      navigate("question", { id, username });
-    });
+    setCurrentQuestion(id, 0);
   };
-
 
   gameDoc(id)
     .get()
     .then((doc) => {
-      console.log(doc.data().current_question);
       const isGameInProgress =
         doc.data().current_question !== null &&
         doc.data().current_question >= 0;
       if (isGameInProgress) {
         if (username === doc.data().host) {
-          setCurrentQuestion(id, doc.data().current_question + 1).then(() => {
-            setTimeout(() => navigate("question", { id, username }), 2000);
-          });
+          setTimeout(() => {
+            setCurrentQuestion(id, doc.data().current_question + 1);
+          }, 5000);
         }
       } else {
         const host = doc.data().host;
