@@ -8,8 +8,14 @@ import {
 
 export default function Lobby({ id, username }) {
   const lobbyEl = createPageContainerEl("lobby");
-  const playersListEl = document.createElement("ol");
 
+  const gameIdEl = document.createElement("div");
+  gameIdEl.id = "game-id";
+  gameIdEl.innerText = id.toUpperCase();
+  lobbyEl.append(gameIdEl);
+
+  const playersListEl = document.createElement("ol");
+  playersListEl.id = "player-list";
   const addPlayerToList = ({ username, score }) => {
     const playerEl = createPlayerListEl(username, score);
     playersListEl.append(playerEl);
