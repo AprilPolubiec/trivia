@@ -1,6 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Roboto:wght@900&display=swap");
+
+:root {
+  --main-bg-color: #232752;
+  --light-blue: #07ffdb;
+  --light-yellow: #ffdf2b;
+  --dark-yellow: #ffbd59;
+  --light-purple: #a542f7;
+  --dark-purple: #883bc8;
+}
+
 body {
   height: 100vh;
   width: 100vw;
+  background-color: var(--main-bg-color);
+}
+
+#logo {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  color: var(--light-blue);
+  font-family: "Oswald", sans-serif;
+  font-size: 2.5rem;
 }
 
 #container {
@@ -26,6 +48,85 @@ body {
   justify-content: space-around;
 }
 
-#landing input, #landing button {
+/* #landing input,
+#landing button {
   padding: 2rem;
+} */
+
+#timer {
+  color: var(--light-yellow);
+}
+
+#question-container {
+  background-color: var(--light-purple);
+  color: #fff;
+}
+
+input,
+button,
+.btn-primary {
+  outline: none;
+  background-color: var(--dark-purple);
+  color: #fff;
+  border-color: var(--dark-purple);
+  padding: 2rem;
+  min-width: 200px;
+}
+
+button:hover,
+.btn-primary:hover,
+.checked {
+  background-color: var(--dark-yellow);
+  color: #fff;
+  border-color: var(--dark-yellow);
+}
+
+::placeholder,
+:-ms-input-placeholder,
+::-ms-input-placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #fff;
+  opacity: 0.5; /* Firefox */
+}
+
+#game-id {
+  color: #ffdf2b;
+  font-size: 5rem;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+}
+
+#lobby {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  align-items: center;
+}
+
+#player-list {
+  height: 54vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding-left: 0;
+  width: 70vw;
+  align-items: center;
+}
+
+#player-list li {
+  background-color: var(--light-purple);
+  color: #fff;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  border-radius: 27px;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  width: 200px;
+}
+
+#player-list li .score {
+  color: var(--light-yellow);
 }
