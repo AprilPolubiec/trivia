@@ -1,15 +1,12 @@
 import { playersCollection, gameDoc, setCurrentQuestion } from "../firebase";
+import { navigate } from "../routes";
 import {
   createPageContainerEl,
   createPlayerListEl,
   createButtonEl,
 } from "../utils";
 
-import Game from "../components/question";
-
 export default function Lobby({ id, username }) {
-  const game = new Game(id);
-
   const lobbyEl = createPageContainerEl("lobby");
   const playersListEl = document.createElement("ol");
 
@@ -49,20 +46,39 @@ export default function Lobby({ id, username }) {
   lobbyEl.append(playersListEl);
 
   const startGame = () => {
-    setCurrentQuestion(id, 0).then(() => game.start());
+    setCurrentQuestion(id, 0).then(() => {
+      //TODO: use localStorage for username
+      navigate("question", { id, username });
+    });
   };
+
 
   gameDoc(id)
     .get()
     .then((doc) => {
-      const host = doc.data().host;
-      if (host === username) {
-        //Render start game button
-        var startGameButtonEl = createButtonEl("start");
-        startGameButtonEl.onclick = () => startGame();
-        lobbyEl.append(startGameButtonEl);
+      console.log(doc.data().current_question);
+      const isGameInProgress =
+        doc.data().current_question !== null &&
+        doc.data().current_question >= 0;
+      if (isGameInProgress) {
+        if (username === doc.data().host) {
+          setCurrentQuestion(id, doc.data().current_question + 1).then(() => {
+            setTimeout(() => navigate("question", { id, username }), 2000);
+          });
+        }
       } else {
-        // render please wait for host to start
+        const host = doc.data().host;
+        if (host === username) {
+          //Render start game button
+          var startGameButtonEl = createButtonEl("start");
+          startGameButtonEl.onclick = () => startGame();
+          lobbyEl.append(startGameButtonEl);
+        } else {
+          // render please wait for host to start
+          var waitForHostEl = document.createElement("div");
+          waitForHostEl.innerText = "Please wait for host to start game";
+          lobbyEl.append(waitForHostEl);
+        }
       }
     });
 
