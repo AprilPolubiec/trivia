@@ -11,6 +11,7 @@ const getShuffledAnswers = (question) => {
   return all_answers;
 };
 
+//TODO: this renders twice on host. figure out why
 const renderQuestion = (question) => {
   // console.log("rendering trivia question");
   const all_answers = getShuffledAnswers(question);
@@ -18,7 +19,7 @@ const renderQuestion = (question) => {
   var buttonGroupEl = document.createElement("div");
   buttonGroupEl.className = "btn-group-vertical";
   buttonGroupEl.setAttribute("name", "answers");
-  buttonGroupEl.innerHTML = question.question;
+  buttonGroupEl.innerHTML = `<div class="question-text">${question.question}</div>`;
 
   all_answers.forEach((answer) => {
     var inputEl = document.createElement("input");
@@ -53,10 +54,10 @@ export default function Question({ id, username }) {
         // Check if correct
         if (a.id === correct_answer) {
           console.log("+1 good job");
+          return navigate("lobby", { id, username });
         } else {
           console.log("You were wrong");
         }
-        return navigate("lobby", { id, username });
       }
     });
     return navigate("lobby", { id, username });
