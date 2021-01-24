@@ -8,6 +8,7 @@ import {
 
 const joinGame = (id, username) => {
   // console.log(`joinGame: ${id} ${username}`);
+  id = id.toLowerCase();
   addPlayerDoc({ id, username }).then(() => {
     navigate("lobby", { id, username });
   });

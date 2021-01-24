@@ -7,6 +7,7 @@ import {
 } from "../utils";
 
 export default function Lobby({ id, username }) {
+  id = id.toLowerCase();
   const lobbyEl = createPageContainerEl("lobby");
 
   const gameIdEl = document.createElement("div");

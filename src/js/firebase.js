@@ -19,9 +19,9 @@ firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
 
 export const gameCollection = db.collection("games");
-export const gameDoc = (id) => gameCollection.doc(id);
+export const gameDoc = (id) => gameCollection.doc(id.toLowerCase());
 
-export const playersCollection = (id) => gameDoc(id).collection("players");
+export const playersCollection = (id) => gameDoc(id.toLowerCase()).collection("players");
 
 export const addGameDoc = async (host) => {
   // Generate new game ID
@@ -43,14 +43,17 @@ export const addGameDoc = async (host) => {
 
 //TODO: make sure player name doesn't already exist
 export const addPlayerDoc = ({ id, username }) => {
+  id = id.toLowerCase();
   return playersCollection(id).doc(username).set({ username, score: 0 });
 };
 
 export const setCurrentQuestion = (id, index) => {
+  id = id.toLowerCase()
   return gameDoc(id).set({ current_question: index }, { merge: true });
 };
 
 export const increasePlayerScore = ({ id, username, amount }) => {
+  id = id.toLowerCase();
   return playersCollection(id)
     .doc(username)
     .update({ score: firebase.firestore.FieldValue.increment(amount) });
