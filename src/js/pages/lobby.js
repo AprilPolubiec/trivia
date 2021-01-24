@@ -10,10 +10,15 @@ export default function Lobby({ id, username }) {
   id = id.toLowerCase();
   const lobbyEl = createPageContainerEl("lobby");
 
+  const textEl = document.createElement("div");
+  textEl.id = "subtitle";
+  textEl.innerText = "Waiting on players...";
+
   const gameIdEl = document.createElement("div");
   gameIdEl.id = "game-id";
   gameIdEl.innerText = id.toUpperCase();
-  lobbyEl.append(gameIdEl);
+  
+  lobbyEl.append(gameIdEl, textEl);
 
   const playersListEl = document.createElement("ol");
   playersListEl.id = "player-list";
