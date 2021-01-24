@@ -17,8 +17,6 @@ export default function Lobby({ id, username }) {
   const gameIdEl = document.createElement("div");
   gameIdEl.id = "game-id";
   gameIdEl.innerText = id.toUpperCase();
-  
-  lobbyEl.append(gameIdEl, textEl);
 
   const playersListEl = document.createElement("ol");
   playersListEl.id = "player-list";
@@ -61,12 +59,11 @@ export default function Lobby({ id, username }) {
       current_question = snap.data().current_question;
       return;
     }
+    console.log("unsubscribeCurrentQuestion: ", snap.data());
     navigate("question", { id, username });
     unsubscribePlayers();
     unsubscribeCurrentQuestion();
   });
-
-  lobbyEl.append(playersListEl);
 
   const startGame = () => {
     setCurrentQuestion(id, 0);
@@ -79,12 +76,16 @@ export default function Lobby({ id, username }) {
         doc.data().current_question !== null &&
         doc.data().current_question >= 0;
       if (isGameInProgress) {
+        lobbyEl.append(gameIdEl, playersListEl);
+
         if (username === doc.data().host) {
           setTimeout(() => {
             setCurrentQuestion(id, doc.data().current_question + 1);
           }, 5000);
         }
       } else {
+        lobbyEl.append(gameIdEl, textEl, playersListEl);
+
         const host = doc.data().host;
         if (host === username) {
           //Render start game button

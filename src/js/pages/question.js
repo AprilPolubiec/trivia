@@ -1,5 +1,5 @@
 import Timer from "../components/timer";
-import { gameDoc } from "../firebase";
+import { gameDoc, increasePlayerScore } from "../firebase";
 import { CONTAINER_ID, QUESTION_CONTAINER_ID } from "../constants";
 import { navigate } from "../routes";
 
@@ -54,7 +54,8 @@ export default function Question({ id, username }) {
         // Check if correct
         if (a.id === correct_answer) {
           console.log("+1 good job");
-          return navigate("lobby", { id, username });
+          increasePlayerScore({ id, username, amount: 10 });
+          return;
         } else {
           console.log("You were wrong");
         }
