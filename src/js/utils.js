@@ -34,7 +34,7 @@ export const createTextInputEl = (name) => {
 
 export const createButtonEl = (text) => {
   var buttonEl = document.createElement("button");
-  buttonEl.classList.add("btn", "btn-primary");
+  buttonEl.classList.add("btn");
   buttonEl.innerText = text.toUpperCase();
   return buttonEl;
 };
