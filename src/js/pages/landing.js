@@ -5,11 +5,16 @@ import {
   createTextInputEl,
   createButtonEl,
 } from "../utils";
+import bg_music from "../../media/audio/bg_music2.mp3";
 
 const joinGame = (id, username) => {
   // console.log(`joinGame: ${id} ${username}`);
   id = id.toLowerCase();
   addPlayerDoc({ id, username }).then(() => {
+    var myAudio = new Audio(bg_music);
+
+    myAudio.loop = true;
+    myAudio.play();
     navigate("lobby", { id, username });
   });
 };
