@@ -26,6 +26,7 @@ export const playersCollection = (id) => gameDoc(id.toLowerCase()).collection("p
 export const addGameDoc = async (host) => {
   // Generate new game ID
   const id = generateGameID();
+  //TODO: validate that game does not already exist
   const questions = await generateTriviaQuestions();
   console.log(id, questions);
   return gameDoc(id)

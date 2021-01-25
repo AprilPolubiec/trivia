@@ -11,7 +11,6 @@ const getShuffledAnswers = (question) => {
   return all_answers;
 };
 
-//TODO: this renders twice on host. figure out why
 const renderQuestion = (question) => {
   // console.log("rendering trivia question");
   const all_answers = getShuffledAnswers(question);
@@ -45,7 +44,7 @@ export default function Question({ id, username }) {
   questionContainerEl.id = QUESTION_CONTAINER_ID;
 
   var correct_answer;
-  const timer = new Timer(10);
+  const timer = new Timer(30);
   timer.render();
   timer.ontimeout(() => {
     const answers = document.querySelectorAll('input[name="answers"]');
