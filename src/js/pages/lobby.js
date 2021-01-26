@@ -5,8 +5,10 @@ import {
   createPlayerListEl,
   createButtonEl,
 } from "../utils";
+import { greetPlayer, announceNewPlayer, announceCurrentScores } from "../audio";
 
 export default function Lobby({ id, username }) {
+  console.log("rendering lobby");
   id = id.toLowerCase();
   const lobbyEl = createPageContainerEl("lobby");
 
@@ -36,10 +38,14 @@ export default function Lobby({ id, username }) {
     playerEl.remove();
   };
 
+  var isFirstSnap = true;
   const unsubscribePlayers = playersCollection(id).onSnapshot((querySnap) => {
     querySnap.docChanges().forEach(function (change) {
       if (change.type === "added") {
         console.log("New player: ", change.doc.data().username);
+        if (!isFirstSnap) {
+          announceNewPlayer(change.doc.data().username);
+        }
         addPlayerToList(change.doc.data());
       }
       if (change.type === "modified") {
@@ -51,6 +57,7 @@ export default function Lobby({ id, username }) {
         removePlayerFromList(change.doc.data());
       }
     });
+    isFirstSnap = false;
   });
 
   var current_question = -1;
@@ -77,13 +84,25 @@ export default function Lobby({ id, username }) {
         doc.data().current_question >= 0;
       if (isGameInProgress) {
         lobbyEl.append(gameIdEl, playersListEl);
-
-        if (username === doc.data().host) {
-          setTimeout(() => {
-            setCurrentQuestion(id, doc.data().current_question + 1);
-          }, 5000);
-        }
+        doc.ref
+          .collection("players")
+          .orderBy("score", "desc")
+          .get()
+          .then((collectionQuery) => {
+            const scores = collectionQuery.docs.map((doc) => {
+              return { username: doc.id, score: doc.data().score };
+            });
+            return announceCurrentScores(scores);
+          })
+          .then(() => {
+            if (username === doc.data().host) {
+              setTimeout(() => {
+                setCurrentQuestion(id, doc.data().current_question + 1);
+              }, 5000);
+            }
+          });
       } else {
+        greetPlayer(username);
         lobbyEl.append(gameIdEl, textEl, playersListEl);
 
         const host = doc.data().host;

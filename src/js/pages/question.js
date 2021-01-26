@@ -2,6 +2,7 @@ import Timer from "../components/timer";
 import { gameDoc, increasePlayerScore } from "../firebase";
 import { CONTAINER_ID, QUESTION_CONTAINER_ID } from "../constants";
 import { navigate } from "../routes";
+import { announceCorrectAnswer, callOutPlayer } from "../audio";
 
 const getShuffledAnswers = (question) => {
   const all_answers = question.incorrect_answers.concat(
@@ -48,19 +49,26 @@ export default function Question({ id, username }) {
   timer.render();
   timer.ontimeout(() => {
     const answers = document.querySelectorAll('input[name="answers"]');
+    var is_correct = false;
     answers.forEach((a) => {
       if (a.checked) {
         // Check if correct
         if (a.id === correct_answer) {
           console.log("+1 good job");
-          increasePlayerScore({ id, username, amount: 10 });
+          is_correct = true;
           return;
         } else {
           console.log("You were wrong");
         }
       }
     });
-    return navigate("lobby", { id, username });
+    return announceCorrectAnswer(correct_answer, is_correct)
+      .then(() =>
+        increasePlayerScore({ id, username, amount: is_correct ? 10 : 0 })
+      )
+      .then(() => {
+        navigate("lobby", { id, username });
+      });
   });
 
   gameDoc(id)
@@ -73,6 +81,10 @@ export default function Question({ id, username }) {
       renderQuestion(question);
       timer.start();
     });
+
+  $(window).blur(function () {
+    callOutPlayer(username);
+  });
 
   return questionContainerEl;
 }
