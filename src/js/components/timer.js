@@ -1,8 +1,7 @@
 import { CONTAINER_ID } from "../constants";
-import buzzer from "../../media/audio/timeout-buzzer.flac"
+import { playBuzzer } from "../audio";
 
 function Timer(duration = 0) {
-  this.buzzer = new Audio(buzzer)
   this.duration = duration;
   this.timeLeft = this.duration;
   this.interval = () => {};
@@ -19,10 +18,10 @@ function Timer(duration = 0) {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         if (this.timeLeft === 11) {
-          this.buzzer.play();
+          playBuzzer();
         }
         this.timeLeft--;
-        this.timerEl.innerText = this.timeLeft
+        this.timerEl.innerText = this.timeLeft;
       } else {
         this.stop();
         this.timeoutListener();
