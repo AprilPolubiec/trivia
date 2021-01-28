@@ -21,12 +21,18 @@ export const db = firebase.firestore();
 export const gameCollection = db.collection("games");
 export const gameDoc = (id) => gameCollection.doc(id.toLowerCase());
 
-export const playersCollection = (id) => gameDoc(id.toLowerCase()).collection("players");
+export const playersCollection = (id) =>
+  gameDoc(id.toLowerCase()).collection("players");
 
 export const addGameDoc = async (host) => {
   // Generate new game ID
-  const id = generateGameID();
-  //TODO: validate that game does not already exist
+  var id, is_unique_id;
+  while (!is_unique_id) {
+    console.log("Not a unique id... trying again")
+    id = generateGameID();
+    var doc = await gameDoc(id).get();
+    is_unique_id = !doc.exists;
+  }
   const questions = await generateTriviaQuestions();
   console.log(id, questions);
   return gameDoc(id)
@@ -49,7 +55,7 @@ export const addPlayerDoc = ({ id, username }) => {
 };
 
 export const setCurrentQuestion = (id, index) => {
-  id = id.toLowerCase()
+  id = id.toLowerCase();
   return gameDoc(id).set({ current_question: index }, { merge: true });
 };
 
