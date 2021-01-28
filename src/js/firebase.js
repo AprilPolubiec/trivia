@@ -28,7 +28,7 @@ export const addGameDoc = async (host) => {
   // Generate new game ID
   var id, is_unique_id;
   while (!is_unique_id) {
-    console.log("Not a unique id... trying again")
+    console.log("Not a unique id... trying again");
     id = generateGameID();
     var doc = await gameDoc(id).get();
     is_unique_id = !doc.exists;
@@ -48,10 +48,18 @@ export const addGameDoc = async (host) => {
     .catch((err) => console.log(err));
 };
 
-//TODO: make sure player name doesn't already exist
 export const addPlayerDoc = ({ id, username }) => {
   id = id.toLowerCase();
-  return playersCollection(id).doc(username).set({ username, score: 0 });
+  return playersCollection(id)
+    .doc(username)
+    .get()
+    .then((docRef) => {
+      if (docRef.exists) {
+        return Promise.reject("Username is taken");
+      } else {
+        return docRef.ref.set({ username, score: 0 });
+      }
+    });
 };
 
 export const setCurrentQuestion = (id, index) => {
