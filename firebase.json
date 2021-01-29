@@ -8,6 +8,7 @@
     ]
   },
   "hosting": {
+    "site": "trrrivia",
     "public": "public",
     "ignore": [
       "firebase.json",
