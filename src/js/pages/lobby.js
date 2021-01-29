@@ -30,6 +30,8 @@ export default function Lobby({ id, username }) {
   exitButtonEl.id = "exit";
   exitButtonEl.innerHTML = exitIcon;
   exitButtonEl.onclick = () => {
+    unsubscribeCurrentQuestion();
+    unsubscribePlayers();
     exitGame({ id, username });
     navigate("landing");
   };
