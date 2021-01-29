@@ -98,7 +98,7 @@ export const announceCorrectAnswer = (
       try {
         sound_effect.play();
       } catch {
-        console.error("Audio disabled")
+        console.error("Audio disabled");
       }
       highlightCorrectAnswer(correct_answer);
       return speak(correct_answer);
@@ -112,7 +112,9 @@ export const announceCorrectAnswer = (
     });
 };
 
+//TODO: fix random error that score could be found on null
 export const announceCurrentScores = (scores) => {
+  console.log(scores);
   if (scores.length === 1) {
     return;
   }
