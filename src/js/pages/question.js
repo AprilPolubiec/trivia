@@ -99,9 +99,5 @@ export default function Question({ id, username }) {
       timer.start();
     });
 
-  // $(window).blur(function () {
-  //   callOutPlayer(username);
-  // });
-
   return questionContainerEl;
 }
