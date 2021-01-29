@@ -5,14 +5,22 @@ import incorrectSoundFile from "../media/audio/incorrect.mp3";
 
 export const playBuzzer = () => {
   const buzzer = new Audio(buzzerFile);
-  buzzer.play();
+  try {
+    buzzer.play();
+  } catch {
+    console.error("Audio disabled");
+  }
 };
 
 export const startBackgroundMusic = () => {
   console.log("starting bg music");
   const bg_music = new Audio(bgMusicFile);
   bg_music.loop = true;
-  bg_music.play();
+  try {
+    bg_music.play();
+  } catch {
+    console.error("Audio disabled");
+  }
 };
 
 const speechSynthesis = window.speechSynthesis;
@@ -87,7 +95,11 @@ export const announceCorrectAnswer = (
       const sound_effect = is_player_correct
         ? new Audio(correctSoundFile)
         : new Audio(incorrectSoundFile);
-      sound_effect.play();
+      try {
+        sound_effect.play();
+      } catch {
+        console.error("Audio disabled")
+      }
       highlightCorrectAnswer(correct_answer);
       return speak(correct_answer);
     })
@@ -112,7 +124,7 @@ export const announceCurrentScores = (scores) => {
       "In first place we have... NOBODY! Really? Not a single one of you knew the answer? Yeesh.";
   } else {
     const secondPlace = scores[1].score > 1 ? scores[1] : null;
-    const tieForFirst = firstPlace && firstPlace === secondPlace;
+    const tieForFirst = firstPlace && firstPlace.score === secondPlace.score;
     const allTiesForFirst = scores.filter((s) => s.score === firstPlace.score);
     if (tieForFirst) {
       var names =
@@ -122,7 +134,7 @@ export const announceCurrentScores = (scores) => {
           .join(", ") +
         " and " +
         allTiesForFirst[allTiesForFirst.length - 1].username;
-      text = `We've got a tie for first! ${names} are tied with a score of ${allTiesForFirst[0].score}. Who will come out on top?`;
+      text = `We've got a tie for first! ${names} are tied with a score of ${allTiesForFirst[0].score}.`;
     } else {
       text = `${firstPlace.username} is taking the lead with a score of ${firstPlace.score}.`;
       if (secondPlace) {
