@@ -23,12 +23,14 @@ export const createPageContainerEl = (page) => {
   return containerEl;
 };
 
-export const createTextInputEl = (name) => {
+export const createTextInputEl = (name, placeholder = true) => {
   var inputEl = document.createElement("input");
   inputEl.type = "text";
   inputEl.id = name.replace(" ", "-");
   inputEl.setAttribute("name", name.replace(" ", "-"));
-  inputEl.placeholder = `enter ${name}`.toUpperCase();
+  if (placeholder) {
+    inputEl.placeholder = `enter ${name}`.toUpperCase();
+  }
   return inputEl;
 };
 

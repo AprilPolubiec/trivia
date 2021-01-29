@@ -50,14 +50,26 @@ export const addGameDoc = async (host) => {
 
 export const addPlayerDoc = ({ id, username }) => {
   id = id.toLowerCase();
-  return playersCollection(id)
-    .doc(username)
+  return gameDoc(id)
     .get()
-    .then((docRef) => {
-      if (docRef.exists) {
-        return Promise.reject("Username is taken");
+    .then((gameDoc) => {
+      if (gameDoc.exists) {
+        return playersCollection(id)
+          .doc(username)
+          .get()
+          .then((docRef) => {
+            if (docRef.exists) {
+              if (!docRef.data().online) {
+                return docRef.ref.update({ online: true });
+              } else {
+                return Promise.reject("Username is taken");
+              }
+            } else {
+              return docRef.ref.set({ username, score: 0, online: true });
+            }
+          });
       } else {
-        return docRef.ref.set({ username, score: 0 });
+        return Promise.reject("Game does not exist");
       }
     });
 };
@@ -72,4 +84,8 @@ export const increasePlayerScore = ({ id, username, amount }) => {
   return playersCollection(id)
     .doc(username)
     .update({ score: firebase.firestore.FieldValue.increment(amount) });
+};
+
+export const exitGame = ({ id, username }) => {
+  return playersCollection(id).doc(username).update({ online: false });
 };
