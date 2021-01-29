@@ -13,7 +13,7 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(mp3|flac)$/,
+        test: /\.(mp3|flac|wav)$/,
         use: ["file-loader"],
       },
     ],

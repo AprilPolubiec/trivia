@@ -1,5 +1,7 @@
 import buzzerFile from "../media/audio/timeout-buzzer.flac";
 import bgMusicFile from "../media/audio/bg_music2.mp3";
+import correctSoundFile from "../media/audio/correct.wav";
+import incorrectSoundFile from "../media/audio/incorrect.mp3";
 
 export const playBuzzer = () => {
   const buzzer = new Audio(buzzerFile);
@@ -57,7 +59,6 @@ export const announcePlayerHasLeft = (username) => {
   return speak(`${username} has left the game.`);
 };
 
-
 export const callOutPlayer = (username) => {
   return speak(
     `Hey ${username}! Where do you think you're going? You're not cheating are you? I told you I would know! You really thought I wouldn't notice?`
@@ -76,25 +77,39 @@ export const greetHost = (username, id) => {
   );
 };
 
-export const announceCorrectAnswer = (correct_answer, is_player_correct) => {
-  var text = `Time's up! The correct answer is ${correct_answer}.`;
-  if (is_player_correct) {
-    text += "Nice job!";
-  } else {
-    text += "Oof... maybe next time";
-  }
-  text += "Let's see how your friends did";
-  return speak(text);
+export const announceCorrectAnswer = (
+  correct_answer,
+  is_player_correct,
+  highlightCorrectAnswer
+) => {
+  return speak("Time's up! The correct answer is")
+    .then(() => {
+      const sound_effect = is_player_correct
+        ? new Audio(correctSoundFile)
+        : new Audio(incorrectSoundFile);
+      sound_effect.play();
+      highlightCorrectAnswer(correct_answer);
+      return speak(correct_answer);
+    })
+    .then(() => {
+      if (is_player_correct) {
+        return speak("Nice job!");
+      } else {
+        return speak("Sorry... maybe next time");
+      }
+    });
 };
 
 export const announceCurrentScores = (scores) => {
-  console.log("scores: ", scores)
+  if (scores.length === 1) {
+    return;
+  }
   var text;
   const firstPlace = scores[0].score > 0 ? scores[0] : null;
 
   if (!firstPlace) {
     text =
-      "In first place we have... NOBODY! Really? Not a single one of you knew the answer? Yeesh. Just a bunch of zeros in here.";
+      "In first place we have... NOBODY! Really? Not a single one of you knew the answer? Yeesh.";
   } else {
     const secondPlace = scores[1].score > 1 ? scores[1] : null;
     const tieForFirst = firstPlace && firstPlace === secondPlace;
@@ -120,6 +135,5 @@ export const announceCurrentScores = (scores) => {
 };
 
 export const readQuestion = (question, index) => {
-  return speak(`Question ${index + 1}...`)
+  return speak(`Question ${index + 1}...`);
 };
-
