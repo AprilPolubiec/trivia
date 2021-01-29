@@ -2,7 +2,7 @@ import Timer from "../components/timer";
 import { gameDoc, increasePlayerScore } from "../firebase";
 import { CONTAINER_ID, QUESTION_CONTAINER_ID } from "../constants";
 import { navigate } from "../routes";
-import { announceCorrectAnswer, callOutPlayer } from "../audio";
+import { announceCorrectAnswer, callOutPlayer, readQuestion } from "../audio";
 
 const getShuffledAnswers = (question) => {
   const all_answers = question.incorrect_answers.concat(
@@ -79,12 +79,13 @@ export default function Question({ id, username }) {
       const question = docSnap.data().questions[current_question];
       correct_answer = question.correct_answer;
       renderQuestion(question);
+      readQuestion(question.question, current_question);
       timer.start();
     });
 
-  $(window).blur(function () {
-    callOutPlayer(username);
-  });
+  // $(window).blur(function () {
+  //   callOutPlayer(username);
+  // });
 
   return questionContainerEl;
 }

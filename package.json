@@ -10,6 +10,9 @@
   "name": "trivia",
   "version": "1.0.0",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-regular-svg-icons": "^5.15.2",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "acorn": "^8.0.4",
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",

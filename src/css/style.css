@@ -51,6 +51,17 @@ body {
   justify-content: space-around;
 }
 
+#game-code-container {
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  font-size: 3rem;
+  margin: 0 1rem;
+  text-align: center;
+}
+
 #timer {
   color: var(--light-yellow);
   font-size: 5rem;
@@ -72,8 +83,16 @@ button,
   background-color: var(--dark-purple);
   color: #fff;
   border-color: var(--dark-purple);
-  padding: 2rem;
+  padding: 0rem 1rem;
   min-width: 200px;
+  font-size: 3rem;
+  font-family: "Oswald";
+  text-transform: uppercase;
+  text-align: center;
+}
+
+input {
+  background: none;
 }
 
 button:hover,
@@ -99,10 +118,28 @@ button:hover,
 }
 
 #game-id {
-  color: #ffdf2b;
+  color: var(--light-yellow);
   font-size: 5rem;
   font-family: "Oswald", sans-serif;
   font-weight: 700;
+}
+
+#error {
+  color: var(--light-yellow);
+}
+
+#exit {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 1.5rem;
+  color: var(--light-blue);
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+#exit:hover {
+  opacity: 1;
 }
 
 #lobby {

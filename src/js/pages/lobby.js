@@ -1,16 +1,39 @@
-import { playersCollection, gameDoc, setCurrentQuestion } from "../firebase";
+import {
+  playersCollection,
+  gameDoc,
+  setCurrentQuestion,
+  exitGame,
+} from "../firebase";
 import { navigate } from "../routes";
 import {
   createPageContainerEl,
   createPlayerListEl,
   createButtonEl,
 } from "../utils";
-import { greetPlayer, announceNewPlayer, announceCurrentScores } from "../audio";
+import { CONTAINER_ID } from "../constants";
+import {
+  greetPlayer,
+  announceNewPlayer,
+  announceCurrentScores,
+  greetHost,
+  announcePlayerHasLeft,
+} from "../audio";
+import { exitIcon } from "../icons";
 
 export default function Lobby({ id, username }) {
   console.log("rendering lobby");
   id = id.toLowerCase();
   const lobbyEl = createPageContainerEl("lobby");
+
+  const containerEl = document.getElementById(CONTAINER_ID);
+  const exitButtonEl = document.createElement("div");
+  exitButtonEl.id = "exit";
+  exitButtonEl.innerHTML = exitIcon;
+  exitButtonEl.onclick = () => {
+    exitGame({ id, username });
+    navigate("landing");
+  };
+  containerEl.append(exitButtonEl);
 
   const textEl = document.createElement("div");
   textEl.id = "subtitle";
@@ -39,23 +62,39 @@ export default function Lobby({ id, username }) {
   };
 
   var isFirstSnap = true;
+  var players = [];
   const unsubscribePlayers = playersCollection(id).onSnapshot((querySnap) => {
     querySnap.docChanges().forEach(function (change) {
+      const data = change.doc.data();
       if (change.type === "added") {
-        console.log("New player: ", change.doc.data().username);
+        console.log("New player: ", data.username);
         if (!isFirstSnap) {
-          announceNewPlayer(change.doc.data().username);
+          announceNewPlayer(data.username);
         }
-        addPlayerToList(change.doc.data());
+        addPlayerToList(data);
+        players.push(data.username);
       }
       if (change.type === "modified") {
-        console.log("Modified player: ", change.doc.data());
-        updatePlayerScore(change.doc.data());
+        console.log("Modified player: ", data);
+        // If played has signed back in, add to lobby list
+        if (data.online && !players.includes(data.username)) {
+          addPlayerToList(data);
+          announceNewPlayer(data.username);
+          players.push(data.username);
+        } else if (!data.online && players.includes(data.username)) {
+          // User has signed out
+          removePlayerFromList(data);
+          announcePlayerHasLeft(data.username);
+          players.splice(players.indexOf(data.username), 1);
+        } else {
+          updatePlayerScore(data);
+        }
       }
-      if (change.type === "removed") {
-        console.log("Player left: ", change.doc.data());
-        removePlayerFromList(change.doc.data());
-      }
+      // if (change.type === "removed") {
+      //   //TODO: handle leaving
+      //   console.log("Player left: ", data);
+      //   removePlayerFromList(data);
+      // }
     });
     isFirstSnap = false;
   });
@@ -79,11 +118,15 @@ export default function Lobby({ id, username }) {
   gameDoc(id)
     .get()
     .then((doc) => {
+      const isHost = username === doc.data().host;
       const isGameInProgress =
         doc.data().current_question !== null &&
         doc.data().current_question >= 0;
+      const isFinalQuestion =
+        doc.data().current_question === doc.data().questions.length - 1;
       if (isGameInProgress) {
         lobbyEl.append(gameIdEl, playersListEl);
+        // sortPlayersByScore()
         doc.ref
           .collection("players")
           .orderBy("score", "desc")
@@ -92,17 +135,27 @@ export default function Lobby({ id, username }) {
             const scores = collectionQuery.docs.map((doc) => {
               return { username: doc.id, score: doc.data().score };
             });
+            //sort scores
             return announceCurrentScores(scores);
           })
           .then(() => {
-            if (username === doc.data().host) {
-              setTimeout(() => {
-                setCurrentQuestion(id, doc.data().current_question + 1);
-              }, 5000);
+            if (isHost) {
+              // TODO: handle end of game
+              if (isFinalQuestion) {
+                // announceWinner
+              } else {
+                setTimeout(() => {
+                  setCurrentQuestion(id, doc.data().current_question + 1);
+                }, 5000);
+              }
             }
           });
       } else {
-        greetPlayer(username);
+        if (isHost) {
+          greetHost(username, id);
+        } else {
+          greetPlayer(username);
+        }
         lobbyEl.append(gameIdEl, textEl, playersListEl);
 
         const host = doc.data().host;

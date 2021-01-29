@@ -1,4 +1,4 @@
-import { addGameDoc, addPlayerDoc } from "../firebase";
+import { addGameDoc, addPlayerDoc, exitGame } from "../firebase";
 import { navigate } from "../routes";
 import {
   createPageContainerEl,
@@ -13,6 +13,9 @@ const joinGame = (id, username) => {
   addPlayerDoc({ id, username })
     .then(() => {
       startBackgroundMusic();
+      window.onbeforeunload = () => {
+        exitGame({ id, username });
+      };
       navigate("lobby", { id, username });
     })
     .catch((err) => {
@@ -44,8 +47,8 @@ export default function Landing() {
   joinButtonEl.onclick = () =>
     joinGame(`${codeEl1.value}-${codeEl2.value}`, usernameInputEl.value);
 
-  var errorEl = document.createElement("div")
-  errorEl.id = "error"
+  var errorEl = document.createElement("div");
+  errorEl.id = "error";
 
   var orEl = document.createElement("div");
   orEl.innerText = "- OR -";
