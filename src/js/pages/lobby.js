@@ -61,6 +61,18 @@ export default function Lobby({ id, username }) {
     playerEl.remove();
   };
 
+  const sortPlayersByScore = () => {
+    const sortedPlayers = Array.from(playersListEl.children).sort(
+      (playerA, playerB) =>
+        parseInt(playerB.lastChild.innerText) -
+        parseInt(playerA.lastChild.innerText)
+    );
+    while (playersListEl.firstChild) {
+      playersListEl.removeChild(playersListEl.firstChild);
+    }
+    sortedPlayers.forEach((el) => playersListEl.append(el));
+  };
+
   var isFirstSnap = true;
   var players = [];
   const unsubscribePlayers = playersCollection(id).onSnapshot((querySnap) => {
@@ -71,8 +83,10 @@ export default function Lobby({ id, username }) {
         if (!isFirstSnap) {
           announceNewPlayer(data.username);
         }
-        addPlayerToList(data);
-        players.push(data.username);
+        if (data.online) {
+          addPlayerToList(data);
+          players.push(data.username);
+        }
       }
       if (change.type === "modified") {
         console.log("Modified player: ", data);
@@ -121,7 +135,7 @@ export default function Lobby({ id, username }) {
         doc.data().current_question === doc.data().questions.length - 1;
       if (isGameInProgress) {
         lobbyEl.append(gameIdEl, playersListEl);
-        // sortPlayersByScore()
+        sortPlayersByScore();
         doc.ref
           .collection("players")
           .orderBy("score", "desc")
