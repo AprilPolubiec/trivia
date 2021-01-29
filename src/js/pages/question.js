@@ -44,6 +44,18 @@ export default function Question({ id, username }) {
   var questionContainerEl = document.createElement("div");
   questionContainerEl.id = QUESTION_CONTAINER_ID;
 
+  const highlightCorrectAnswer = (correct_answer) => {
+    const correctAnswerEl = document.getElementById(correct_answer);
+    var numFlashes = 9;
+    var flash = setInterval(() => {
+      if (numFlashes > 0) {
+        correctAnswerEl.checked = !correctAnswerEl.checked;
+        numFlashes--;
+      } else {
+        clearInterval(flash)
+      }
+    }, 100);
+  };
   var correct_answer;
   const timer = new Timer(30);
   timer.render();
@@ -62,7 +74,11 @@ export default function Question({ id, username }) {
         }
       }
     });
-    return announceCorrectAnswer(correct_answer, is_correct)
+    return announceCorrectAnswer(
+      correct_answer,
+      is_correct,
+      highlightCorrectAnswer
+    )
       .then(() =>
         increasePlayerScore({ id, username, amount: is_correct ? 10 : 0 })
       )

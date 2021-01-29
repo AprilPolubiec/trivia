@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Roboto:wght@100;300;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@100;200;300;400;700&family=Roboto:wght@100;300;900&display=swap");
 
 :root {
   --main-bg-color: #232752;
@@ -83,16 +83,17 @@ button,
   background-color: var(--dark-purple);
   color: #fff;
   border-color: var(--dark-purple);
-  padding: 0rem 1rem;
+  padding: 2rem;
   min-width: 200px;
-  font-size: 3rem;
   font-family: "Oswald";
-  text-transform: uppercase;
   text-align: center;
 }
 
-input {
+#landing input {
+  font-size: 3rem;
+  padding: 0 1rem;
   background: none;
+  text-transform: uppercase;
 }
 
 button:hover,
@@ -195,10 +196,13 @@ button:hover,
 }
 
 .btn-group-vertical > .question-text {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
   margin-bottom: 1rem;
 }
 
 .btn-group-vertical * {
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
   font-weight: 300;
 }

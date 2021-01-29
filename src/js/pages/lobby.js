@@ -90,11 +90,6 @@ export default function Lobby({ id, username }) {
           updatePlayerScore(data);
         }
       }
-      // if (change.type === "removed") {
-      //   //TODO: handle leaving
-      //   console.log("Player left: ", data);
-      //   removePlayerFromList(data);
-      // }
     });
     isFirstSnap = false;
   });
@@ -175,5 +170,3 @@ export default function Lobby({ id, username }) {
 
   return lobbyEl;
 }
-
-//TODO: add "exit" button
