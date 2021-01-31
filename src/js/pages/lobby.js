@@ -131,6 +131,7 @@ export default function Lobby({ id, username }) {
           players.splice(players.indexOf(data.username), 1);
         } else {
           updatePlayerScore(data);
+          sortPlayersByScore();
         }
       }
     });
@@ -178,9 +179,11 @@ export default function Lobby({ id, username }) {
             //sort scores
             if (isFinalQuestion) {
               return announceWinner(scores, highlightWinner);
-            } else {
-              return announceCurrentScores(scores);
             }
+            return Promise.resolve()
+            // } else {
+            //   // return announceCurrentScores(scores);
+            // }
           })
           .then(() => {
             if (isHost && !isFinalQuestion) {
