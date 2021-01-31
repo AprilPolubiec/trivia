@@ -28,13 +28,13 @@ export const addGameDoc = async (host) => {
   // Generate new game ID
   var id, is_unique_id;
   while (!is_unique_id) {
-    console.log("Not a unique id... trying again");
+    // console.log("Not a unique id... trying again");
     id = generateGameID();
     var doc = await gameDoc(id).get();
     is_unique_id = !doc.exists;
   }
   const questions = await generateTriviaQuestions();
-  console.log(id, questions);
+  // console.log(id, questions);
   return gameDoc(id)
     .set({
       id,
@@ -45,7 +45,7 @@ export const addGameDoc = async (host) => {
     .then(() => {
       return id;
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 };
 
 export const addPlayerDoc = ({ id, username }) => {

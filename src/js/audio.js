@@ -15,7 +15,7 @@ export const playBuzzer = () => {
 };
 
 export const startBackgroundMusic = () => {
-  console.log("starting bg music");
+  // console.log("starting bg music");
   const bg_music = new Audio(bgMusicFile);
   bg_music.loop = true;
   try {
@@ -116,7 +116,7 @@ export const announceCorrectAnswer = (
 
 //TODO: fix random error that score could be found on null
 export const announceCurrentScores = (scores) => {
-  console.log(scores);
+  // console.log(scores);
   if (scores.length === 1) {
     return;
   }

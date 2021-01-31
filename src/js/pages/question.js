@@ -66,11 +66,11 @@ export default function Question({ id, username }) {
       if (a.checked) {
         // Check if correct
         if (a.id === correct_answer) {
-          console.log("+1 good job");
+          // console.log("+1 good job");
           is_correct = true;
           return;
         } else {
-          console.log("You were wrong");
+          // console.log("You were wrong");
         }
       }
     });
@@ -91,7 +91,7 @@ export default function Question({ id, username }) {
     .get()
     .then((docSnap) => {
       const current_question = docSnap.data().current_question;
-      console.log("current_question: ", current_question);
+      // console.log("current_question: ", current_question);
       const question = docSnap.data().questions[current_question];
       correct_answer = question.correct_answer;
       renderQuestion(question);
