@@ -22,7 +22,7 @@ import {
 import { exitIcon } from "../icons";
 
 export default function Lobby({ id, username }) {
-  console.log("rendering lobby");
+  // console.log("rendering lobby");
   id = id.toLowerCase();
   const lobbyEl = createPageContainerEl("lobby");
 
@@ -93,7 +93,7 @@ export default function Lobby({ id, username }) {
   const highlightWinner = (winners) => {
     if (winners) {
       for (let i = 0; i < winners.length; ++i) {
-        console.log("Flashing ", winners[i]);
+        // console.log("Flashing ", winners[i]);
         var winningPlayerEl = document.getElementsByName(
           winners[i].username
         )[0];
@@ -108,7 +108,7 @@ export default function Lobby({ id, username }) {
     querySnap.docChanges().forEach(function (change) {
       const data = change.doc.data();
       if (change.type === "added") {
-        console.log("New player: ", data.username);
+        // console.log("New player: ", data.username);
         if (!isFirstSnap) {
           announceNewPlayer(data.username);
         }
@@ -118,7 +118,7 @@ export default function Lobby({ id, username }) {
         }
       }
       if (change.type === "modified") {
-        console.log("Modified player: ", data);
+        // console.log("Modified player: ", data);
         // If played has signed back in, add to lobby list
         if (data.online && !players.includes(data.username)) {
           addPlayerToList(data);
@@ -144,7 +144,7 @@ export default function Lobby({ id, username }) {
       current_question = snap.data().current_question;
       return;
     }
-    console.log("unsubscribeCurrentQuestion: ", snap.data());
+    // console.log("unsubscribeCurrentQuestion: ", snap.data());
     navigate("question", { id, username });
     unsubscribePlayers();
     unsubscribeCurrentQuestion();
@@ -174,8 +174,8 @@ export default function Lobby({ id, username }) {
             const scores = collectionQuery.docs.map((doc) => {
               return { username: doc.id, score: doc.data().score };
             });
-            console.log("Scores: ", scores);
-            console.log(collectionQuery.docs);
+            // console.log("Scores: ", scores);
+            // console.log(collectionQuery.docs);
             //sort scores
             if (isFinalQuestion) {
               return announceWinner(scores, highlightWinner);

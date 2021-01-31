@@ -14,7 +14,7 @@ export const generateTriviaQuestions = () => {
   return fetch("https://opentdb.com/api.php?amount=10")
     .then((res) => res.json())
     .then((data) => data.results)
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 };
 
 export const createPageContainerEl = (page) => {
