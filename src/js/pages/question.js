@@ -57,7 +57,7 @@ export default function Question({ id, username }) {
     }, 100);
   };
   var correct_answer;
-  const timer = new Timer(30);
+  const timer = new Timer(15);
   timer.render();
   timer.ontimeout(() => {
     const answers = document.querySelectorAll('input[name="answers"]');

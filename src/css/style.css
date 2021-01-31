@@ -98,6 +98,7 @@ button,
 
 button:hover,
 .btn:hover,
+#player-list li.checked,
 .checked,
 .btn-group-vertical label:hover,
 .btn-check:active + .btn-outline-primary,
