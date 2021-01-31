@@ -19,7 +19,8 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: './public',
+    publicPath: "/",
+    contentBase: "./public",
     hot: true,
-  }
+  },
 };

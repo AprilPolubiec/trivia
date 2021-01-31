@@ -2,6 +2,8 @@ import buzzerFile from "../media/audio/timeout-buzzer.flac";
 import bgMusicFile from "../media/audio/bg_music2.mp3";
 import correctSoundFile from "../media/audio/correct.wav";
 import incorrectSoundFile from "../media/audio/incorrect.mp3";
+import fanfareSoundFile from "../media/audio/fanfare.mp3";
+import drumrollSoundFile from "../media/audio/drumroll.wav";
 
 export const playBuzzer = () => {
   const buzzer = new Audio(buzzerFile);
@@ -125,10 +127,14 @@ export const announceCurrentScores = (scores) => {
     text =
       "In first place we have... NOBODY! Really? Not a single one of you knew the answer? Yeesh.";
   } else {
-    const secondPlace = scores[1].score > 1 ? scores[1] : null;
-    const tieForFirst = firstPlace && firstPlace.score === secondPlace.score;
-    const allTiesForFirst = scores.filter((s) => s.score === firstPlace.score);
+    const secondPlace = scores[1].score > 0 ? scores[1] : null;
+    const tieForFirst =
+      firstPlace && secondPlace && firstPlace.score === secondPlace.score;
     if (tieForFirst) {
+      const allTiesForFirst = scores.filter(
+        (s) => s.score === firstPlace.score
+      );
+
       var names =
         allTiesForFirst
           .slice(0, allTiesForFirst.length - 1)
@@ -150,4 +156,55 @@ export const announceCurrentScores = (scores) => {
 
 export const readQuestion = (question, index) => {
   return speak(`Question ${index + 1}...`);
+};
+
+export const announceWinner = (scores, highlightWinner) => {
+  var announcement;
+  var winners = [];
+  const firstPlace = scores[0].score > 0 ? scores[0] : null;
+  if (!firstPlace) {
+    announcement = "nobody!";
+  } else {
+    winners.push(firstPlace);
+    const secondPlace = scores[1].score > 0 ? scores[1] : null;
+    const tieForFirst =
+      firstPlace && secondPlace && firstPlace.score === secondPlace.score;
+    if (tieForFirst) {
+      const allTiesForFirst = scores.filter(
+        (s) => s.score === firstPlace.score
+      );
+
+      winners = winners.concat(allTiesForFirst);
+      var names =
+        allTiesForFirst
+          .slice(0, allTiesForFirst.length - 1)
+          .map((s) => s.username)
+          .join(", ") +
+        " and " +
+        allTiesForFirst[allTiesForFirst.length - 1].username;
+      announcement = `We've got a tie for first! ${names} win with a score of ${allTiesForFirst[0].score}.`;
+    } else {
+      announcement = `${firstPlace.username} is our winner! Way to go!`;
+    }
+  }
+  return speak(
+    "And that was our final question. The winner of today's trivia game is..."
+  ).then(() => {
+    const drum_roll = new Audio(drumrollSoundFile);
+    try {
+      drum_roll.play();
+    } catch {
+      console.error("Audio disabled");
+    }
+    drum_roll.onended = () => {
+      const fanfare = new Audio(fanfareSoundFile);
+      try {
+        fanfare.play();
+      } catch {
+        console.error("Audio disabled");
+      }
+      // highlightWinner(winners);
+      return speak(announcement);
+    };
+  });
 };

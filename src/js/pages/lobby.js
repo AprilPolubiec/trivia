@@ -17,6 +17,7 @@ import {
   announceCurrentScores,
   greetHost,
   announcePlayerHasLeft,
+  announceWinner,
 } from "../audio";
 import { exitIcon } from "../icons";
 
@@ -73,6 +74,32 @@ export default function Lobby({ id, username }) {
       playersListEl.removeChild(playersListEl.firstChild);
     }
     sortedPlayers.forEach((el) => playersListEl.append(el));
+  };
+
+  const flashEl = (el) => {
+    var numFlashes = 9;
+
+    var flash = setInterval(() => {
+      if (numFlashes > 0) {
+        el.classList.toggle("checked");
+        numFlashes--;
+      } else {
+        clearInterval(flash);
+      }
+    }, 100);
+  };
+
+  //TODO: not working right now
+  const highlightWinner = (winners) => {
+    if (winners) {
+      for (let i = 0; i < winners.length; ++i) {
+        console.log("Flashing ", winners[i]);
+        var winningPlayerEl = document.getElementsByName(
+          winners[i].username
+        )[0];
+        flashEl(winningPlayerEl);
+      }
+    }
   };
 
   var isFirstSnap = true;
@@ -146,19 +173,20 @@ export default function Lobby({ id, username }) {
             const scores = collectionQuery.docs.map((doc) => {
               return { username: doc.id, score: doc.data().score };
             });
+            console.log("Scores: ", scores);
+            console.log(collectionQuery.docs);
             //sort scores
-            return announceCurrentScores(scores);
+            if (isFinalQuestion) {
+              return announceWinner(scores, highlightWinner);
+            } else {
+              return announceCurrentScores(scores);
+            }
           })
           .then(() => {
-            if (isHost) {
-              // TODO: handle end of game
-              if (isFinalQuestion) {
-                // announceWinner
-              } else {
-                setTimeout(() => {
-                  setCurrentQuestion(id, doc.data().current_question + 1);
-                }, 5000);
-              }
+            if (isHost && !isFinalQuestion) {
+              setTimeout(() => {
+                setCurrentQuestion(id, doc.data().current_question + 1);
+              }, 5000);
             }
           });
       } else {
